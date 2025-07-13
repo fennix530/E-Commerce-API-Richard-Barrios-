@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 
 router.get('/', productController.getAllProducts); // Pública
 
-router.get('/:id', productController.getProductById);
+router.get('/:id', productController.getProductById); //Pública
 
 router.post('/', auth, productController.createProduct); // Protegida
 

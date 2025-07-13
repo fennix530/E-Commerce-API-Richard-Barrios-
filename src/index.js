@@ -20,12 +20,12 @@ app.use((req, res) => {
 
 // Manejo global de errores
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.stack);
+  console.error(' Error:', err.stack);
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 
 // Servidor activo
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
