@@ -1,7 +1,12 @@
 [
   {
-    "id": 2,
-    "nombre": "Campera ",
+    "id": 3,
+    "nombre": "Campera",
+    "precio": 180
+  },
+  {
+    "id": 4,
+    "nombre": "Campera",
     "precio": 130
   }
 ]

@@ -5,10 +5,34 @@ exports.getAllProducts = async (req, res) => {
     const products = await jsonService.getProducts();
     res.status(200).json(products);
   } catch (error) {
-    console.error('Error interno al obtener productos:', error); // 👈 esto es nuevo
+    console.error('Error interno al obtener productos:', error); 
     res.status(500).json({ error: 'Error al obtener productos' });
   }
 };
+
+exports.getProductById = async (req, res) => {
+  try {
+    const idNum = parseInt(req.params.id);
+
+    if (isNaN(idNum)) {
+      return res.status(400).json({ error: 'ID inválido. Debe ser numérico.' });
+    }
+
+    const productos = await jsonService.getProducts();
+    const producto = productos.find(p => p.id === idNum);
+
+    if (!producto) {
+      return res.status(404).json({ error: 'Producto no encontrado' });
+    }
+
+    res.status(200).json(producto);
+  } catch (error) {
+    console.error('Error al obtener producto por ID:', error);
+    res.status(500).json({ error: 'Error interno al obtener el producto' });
+  }
+};
+
+
 
 exports.createProduct = async (req, res) => {
   try {
@@ -28,6 +52,11 @@ exports.createProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
+
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ error: 'Faltan datos en el cuerpo de la solicitud' });
+    }
+
     const { nombre, precio } = req.body;
 
     const productos = await jsonService.getProducts();

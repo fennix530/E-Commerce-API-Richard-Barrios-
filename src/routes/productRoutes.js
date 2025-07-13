@@ -1,17 +1,18 @@
-// routes/productRoutes.js
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
+const auth = require('../middleware/auth');
 
-router.get('/', productController.getAllProducts);
 
-router.post('/', productController.createProduct);
+router.get('/', productController.getAllProducts); // Pública
 
-router.put('/:id', productController.updateProduct);
+router.get('/:id', productController.getProductById);
 
-router.patch('/:id', productController.partialUpdateProduct);
+router.post('/', auth, productController.createProduct); // Protegida
 
-router.delete('/:id', productController.deleteProduct);
+router.put('/:id', auth, productController.updateProduct); // Protegida
+
+router.delete('/:id',auth, productController.deleteProduct); // Protegida
 
 
 module.exports = router;

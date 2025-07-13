@@ -23,6 +23,8 @@ exports.writeProducts = async (productos) => {
 
 // Agregar un nuevo producto con ID autoincremental
 exports.addProduct = async (productData) => {
+  console.log('BODY recibido:', productData);
+
   const products = await exports.getProducts();
 
   const lastId = products.reduce((max, p) => (p.id > max ? p.id : max), 0);
@@ -36,23 +38,8 @@ exports.addProduct = async (productData) => {
   return newProduct;
 };
 
-// Actualizar parcialmente un producto (PATCH)
-exports.updateProductById = async (id, updates) => {
-  const products = await exports.getProducts();
-  const index = products.findIndex(p => p.id === parseInt(id));
 
-  if (index === -1) {
-    throw new Error('Producto no encontrado');
-  }
 
-  products[index] = {
-    ...products[index],
-    ...updates
-  };
-
-  await exports.writeProducts(products);
-  return products[index];
-};
 
 // Eliminar producto por ID
 exports.deleteProductById = async (id) => {
