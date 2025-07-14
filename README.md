@@ -73,9 +73,6 @@ FIREBASE_APP_ID=...
 
 ---
 
-### 🛠️ Instalación del proyecto
-
-```markdown
 ## 🛠️ Instalación
 
 ```bash
@@ -83,6 +80,7 @@ git clone https://github.com/fennix530/proyecto-final-ecommerce--Richard-Barrios
 cd proyecto-final-ecommerce
 npm install
 npm start
+```
 
 ---
 
