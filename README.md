@@ -62,7 +62,7 @@ El sistema también valida productos duplicados por nombre y protege accesos med
 Configurar un archivo `.env` con los siguientes valores:
 
 ```env
-PORT=3001
+PORT=3000
 JWT_SECRET=tu_clave_secreta
 FIREBASE_PROJECT_ID=...
 FIREBASE_API_KEY=...
@@ -89,7 +89,7 @@ Podés hacer requests a los endpoints usando Postman, Insomnia o desde tu fronte
 ## 🛠️ Instalación
 
 ```bash
-git clone https://github.com/richardbarrios/proyecto-final-ecommerce--Richard-Barrios.git
+git clone https://github.com/fennix530/proyecto-final-ecommerce--Richard-Barrios-.git
 cd proyecto-final-ecommerce
 npm install
 npm start
