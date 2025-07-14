@@ -30,7 +30,8 @@ exports.createProduct = async (producto) => {
 
   const productoConExtra = {
     ...producto,
-    nombreNormalizado
+    nombreNormalizado,
+    updatedAt: new Date().toISOString()
   };
 
   const docRef = await collection.add(productoConExtra);
@@ -43,10 +44,19 @@ exports.createProduct = async (producto) => {
 // Actualizar producto completamente
 exports.updateProduct = async (id, datosActualizados) => {
   const nombreNormalizado = datosActualizados.nombre.trim().toLowerCase();
-  datosActualizados.updatedAt = new Date().toISOString();
-  datosActualizados.nombreNormalizado = nombreNormalizado;
 
-  await collection.doc(id).set(datosActualizados, { merge: false });
+  // Obtener documento original para conservar createdAt
+  const doc = await collection.doc(id).get();
+  const original = doc.exists ? doc.data() : {};
+
+  const datosFinales = {
+    ...original,
+    ...datosActualizados,
+    nombreNormalizado,
+    updatedAt: new Date().toISOString()
+  };
+
+  await collection.doc(id).set(datosFinales, { merge: true });
   const actualizado = await collection.doc(id).get();
   const data = actualizado.data();
   delete data.nombreNormalizado;

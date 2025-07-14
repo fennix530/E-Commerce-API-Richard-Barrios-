@@ -52,7 +52,7 @@ exports.createProduct = async (req, res) => {
     const creado = await firestoreService.createProduct(producto.toJSON());
     res.status(201).json(creado);
   } catch (error) {
-    console.error('🔥 Error al crear producto:', error);
+    console.error('Error al crear producto:', error);
     res.status(400).json({ error: error.message || 'Error al crear producto' });
   }
 };
@@ -61,7 +61,10 @@ exports.createProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const productoActualizado = new Producto(req.body);
+    const productoActualizado = new Producto({
+      ...req.body,
+      updatedAt: new Date().toISOString()
+    });
     const actualizado = await firestoreService.updateProduct(id, productoActualizado.toJSON());
     res.status(200).json(actualizado);
   } catch (error) {

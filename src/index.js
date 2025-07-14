@@ -2,10 +2,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 require('dotenv').config();
-
-// Rutas
 const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/productRoutes');
+
 
 // Middleware para recibir JSON
 app.use(express.json());
