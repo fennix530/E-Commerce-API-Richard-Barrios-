@@ -1,7 +1,7 @@
 class Producto {
   constructor({ nombre, precio, categoria }) {
     if (!nombre || typeof nombre !== 'string') {
-      throw new Error('El nombre es obligatorio y debe ser un string.');
+      throw new Error('El nombre es obligatorio y caracteres validos.');
     }
 
     if (precio === undefined || typeof precio !== 'number' || precio < 0) {
@@ -9,7 +9,7 @@ class Producto {
     }
 
     if (categoria && typeof categoria !== 'string') {
-      throw new Error('La categoría debe ser un string.');
+      throw new Error('La categoría debe tener, caractere validos.');
     }
 
     this.nombre = nombre;

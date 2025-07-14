@@ -3,7 +3,7 @@ const router = express.Router();
 const productController = require('../controllers/productController');
 const auth = require('../middleware/auth');
 
-
+//Rutas
 router.get('/', productController.getAllProducts); // Pública
 
 router.get('/:id', productController.getProductById); //Pública

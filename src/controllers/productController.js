@@ -1,6 +1,9 @@
 const firestoreService = require('../services/firestoreService');
 const Producto = require('../models/product');
 
+// Controlador para obtener productos con filtros por categoría y precio, y paginación por página y límite.
+// Extrae parámetros de la consulta (query), filtra los productos según los criterios recibidos,
+// y devuelve un subconjunto paginado en formato JSON.
 exports.getAllProducts = async (req, res) => {
   try {
     const { page = 1, limit = 10, categoria, precioMin, precioMax } = req.query;
@@ -27,6 +30,7 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
+// Obtener un producto específico por su ID.
 exports.getProductById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -41,6 +45,7 @@ exports.getProductById = async (req, res) => {
   }
 };
 
+// Crea un producto.
 exports.createProduct = async (req, res) => {
   try {
     const producto = new Producto(req.body);
@@ -52,6 +57,7 @@ exports.createProduct = async (req, res) => {
   }
 };
 
+//Actualiza un produto mediante el ID
 exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -64,6 +70,7 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
+//Actaliza un producto parcil mediante el ID 
 exports.partialUpdateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -76,6 +83,7 @@ exports.partialUpdateProduct = async (req, res) => {
   }
 };
 
+//Elimina un producto mediate el ID. 
 exports.deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;

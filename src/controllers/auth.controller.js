@@ -3,8 +3,8 @@ const bcrypt = require('bcryptjs');
 
 const userMock = {
   id: 1,
-  username: 'admin',
-  password: bcrypt.hashSync('1234', 10),
+  username: 'prueba',
+  password: bcrypt.hashSync('5613', 10),
 };
 
 exports.loginUser = (req, res) => {

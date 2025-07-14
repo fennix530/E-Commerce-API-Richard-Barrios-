@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 require('dotenv').config();
 
 // Rutas
@@ -8,6 +9,9 @@ const productRoutes = require('./routes/productRoutes');
 
 // Middleware para recibir JSON
 app.use(express.json());
+
+// Permite solicitudes desde cualquier origen
+app.use(cors()); 
 
 // Rutas protegidas y públicas
 app.use('/api/auth', authRoutes);
