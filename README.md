@@ -75,12 +75,6 @@ FIREBASE_APP_ID=...
 
 ## Despliegue
 
-La API está desplegada en Railway y accesible públicamente en:
-
-🔗 https://proyecto-final-richard-barrios.up.railway.app
-
-Podés hacer requests a los endpoints usando Postman, Insomnia o desde tu frontend.
-
 ---
 
 ### 🛠️ Instalación del proyecto
