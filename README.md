@@ -73,10 +73,6 @@ FIREBASE_APP_ID=...
 
 ---
 
-## Despliegue
-
----
-
 ### 🛠️ Instalación del proyecto
 
 ```markdown
@@ -90,21 +86,10 @@ npm start
 
 ---
 
+## Despliegue
 
 ---
 
-### 🌐 Despliegue
-
-```markdown
-## 🌐 Despliegue
-
-La API está desplegada en Railway y accesible públicamente en:
-
-🔗 https://proyecto-final-richard-barrios.up.railway.app
-
-Podés probar los endpoints usando herramientas como Postman, Insomnia o conectarte desde tu frontend.
-
----
 
 ## 👨‍💻 Autor
 
