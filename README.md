@@ -23,12 +23,12 @@ Este proyecto es una API RESTful para la gestión de productos en una tienda onl
 
 ├── src/ 
     │   
-    ├── controllers/ │  
-    ├── middleware/ │
-    ├── models/ │  
-    ├── public/ │ 
-    ├── routes/ │
-    ├── services/ │ 
+    ├── controllers/   
+    ├── middleware/ 
+    ├── models/   
+    ├── public/  
+    ├── routes/ 
+    ├── services/  
     ├── index.js/    
     └── config/ 
 ├── .env 

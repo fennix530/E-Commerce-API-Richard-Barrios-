@@ -8,7 +8,7 @@ router.get('/', productController.getAllProducts); // Pública
 
 router.get('/:id', productController.getProductById); //Pública
 
-router.post('/', auth, productController.createProduct); // Protegida
+router.post('/create', auth, productController.createProduct); // Protegida
 
 router.put('/:id', auth, productController.updateProduct); // Protegida
 

@@ -1,7 +1,7 @@
 const db = require('../config/firebase');
 const collection = db.collection('productos');
 
-// Obtener todos los productos con limpieza interna
+// Obtener todos los productos
 exports.getProducts = async () => {
   const snapshot = await collection.get();
   return snapshot.docs.map(doc => {
@@ -20,10 +20,11 @@ exports.getProductById = async (id) => {
   return { id: doc.id, ...data };
 };
 
-// Crear producto evitando duplicados por nombre (normalizado)
+// Crear producto evitando duplicados por nombre normalizado
 exports.createProduct = async (producto) => {
   const nombreNormalizado = producto.nombre.trim().toLowerCase();
   const existentes = await collection.where('nombreNormalizado', '==', nombreNormalizado).get();
+
   if (!existentes.empty) {
     throw new Error(`Ya existe un producto con el nombre "${producto.nombre}".`);
   }
@@ -41,13 +42,17 @@ exports.createProduct = async (producto) => {
   return { id: nuevo.id, ...data };
 };
 
-// Actualizar producto completamente
+// Actualizar el producto
 exports.updateProduct = async (id, datosActualizados) => {
-  const nombreNormalizado = datosActualizados.nombre.trim().toLowerCase();
-
-  // Obtener documento original para conservar createdAt
   const doc = await collection.doc(id).get();
   const original = doc.exists ? doc.data() : {};
+
+  // Evitar que el updatedAt viejo se mezcle
+  delete original.updatedAt;
+
+  const nombreNormalizado = datosActualizados.nombre
+    ? datosActualizados.nombre.trim().toLowerCase()
+    : original.nombre ? original.nombre.trim().toLowerCase() : '';
 
   const datosFinales = {
     ...original,
@@ -57,27 +62,14 @@ exports.updateProduct = async (id, datosActualizados) => {
   };
 
   await collection.doc(id).set(datosFinales, { merge: true });
+
   const actualizado = await collection.doc(id).get();
   const data = actualizado.data();
   delete data.nombreNormalizado;
   return { id: actualizado.id, ...data };
 };
 
-// Actualizar parcialmente
-exports.partialUpdateProduct = async (id, updates) => {
-  updates.updatedAt = new Date().toISOString();
-  if (updates.nombre) {
-    updates.nombreNormalizado = updates.nombre.trim().toLowerCase();
-  }
-
-  await collection.doc(id).update(updates);
-  const actualizado = await collection.doc(id).get();
-  const data = actualizado.data();
-  delete data.nombreNormalizado;
-  return { id: actualizado.id, ...data };
-};
-
-// Eliminar producto
+// Eliminar producto por ID
 exports.deleteProduct = async (id) => {
   await collection.doc(id).delete();
   return { mensaje: 'Producto eliminado correctamente' };

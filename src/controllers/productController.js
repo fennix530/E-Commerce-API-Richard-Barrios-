@@ -1,9 +1,7 @@
 const firestoreService = require('../services/firestoreService');
 const Producto = require('../models/product');
 
-// Controlador para obtener productos con filtros por categoría y precio, y paginación por página y límite.
-// Extrae parámetros de la consulta (query), filtra los productos según los criterios recibidos,
-// y devuelve un subconjunto paginado en formato JSON.
+// Obtener todos los productos con filtros y paginación
 exports.getAllProducts = async (req, res) => {
   try {
     const { page = 1, limit = 10, categoria, precioMin, precioMax } = req.query;
@@ -30,7 +28,7 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
-// Obtener un producto específico por su ID.
+// Obtener un producto por ID
 exports.getProductById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -45,7 +43,7 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-// Crea un producto.
+// Crear un producto
 exports.createProduct = async (req, res) => {
   try {
     const producto = new Producto(req.body);
@@ -57,15 +55,29 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-//Actualiza un produto mediante el ID
+// Actualizar un producto
 exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const productoActualizado = new Producto({
+    const productoExistente = await firestoreService.getProductById(id);
+
+    if (!productoExistente) {
+      return res.status(404).json({ error: 'Producto no encontrado' });
+    }
+
+    // Normalización si se incluye el nombre
+    const nombreNormalizado = req.body.nombre
+      ? req.body.nombre.trim().toLowerCase()
+      : productoExistente.nombre.trim().toLowerCase();
+
+    const productoActualizado = {
+      ...productoExistente,
       ...req.body,
+      nombreNormalizado,
       updatedAt: new Date().toISOString()
-    });
-    const actualizado = await firestoreService.updateProduct(id, productoActualizado.toJSON());
+    };
+
+    const actualizado = await firestoreService.updateProduct(id, productoActualizado);
     res.status(200).json(actualizado);
   } catch (error) {
     console.error('Error al actualizar producto:', error);
@@ -73,20 +85,7 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
-//Actaliza un producto parcil mediante el ID 
-exports.partialUpdateProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updates = { ...req.body, updatedAt: new Date().toISOString() };
-    const actualizado = await firestoreService.partialUpdateProduct(id, updates);
-    res.status(200).json(actualizado);
-  } catch (error) {
-    console.error('Error al actualizar parcialmente:', error);
-    res.status(500).json({ error: error.message || 'Error al actualizar parcialmente' });
-  }
-};
-
-//Elimina un producto mediate el ID. 
+// Eliminar un producto por ID
 exports.deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
