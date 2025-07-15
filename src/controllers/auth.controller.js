@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const userMock = {
   id: 1,
   username: 'prueba',
-  password: bcrypt.hashSync('5613', 10),
+  password: bcrypt.hashSync(process.env.MOCK_USER_PASSWORD, 10),
 };
 
 exports.loginUser = (req, res) => {

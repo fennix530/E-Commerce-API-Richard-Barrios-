@@ -23,7 +23,7 @@ app.use((req, res) => {
 
 // Manejo global de errores
 app.use((err, req, res, next) => {
-  console.error(' Error:', err.stack);
+  console.error('Error:', err.stack);
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 
