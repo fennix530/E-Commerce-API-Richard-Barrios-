@@ -20,7 +20,7 @@ Este proyecto es una API RESTful para la gestión de productos en una tienda onl
 
 ## Estructura del proyecto
 
-
+<pre>```
 ├── src/ 
     │   
     ├── controllers/   
@@ -32,8 +32,8 @@ Este proyecto es una API RESTful para la gestión de productos en una tienda onl
     ├── index.js/    
     └── config/ 
 ├── .env 
-└── README.m
-
+└── README.
+´´´<pre>
 ---
 
 ## Endpoints principales
