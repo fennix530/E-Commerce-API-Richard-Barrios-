@@ -10,12 +10,11 @@
     "type": "git",
     "url": "git+https://github.com/fennix530/proyecto-final-ecommerce--Richard-Barrios-.git"
   },
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
+  "license": "MIT",
+  "author": "Richard Barrios",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js"
   },
   "dependencies": {
