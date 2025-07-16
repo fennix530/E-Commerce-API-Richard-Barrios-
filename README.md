@@ -42,10 +42,9 @@ Este proyecto es una API RESTful para la gestión de productos en una tienda onl
 |--------|-----------------------|---------------------------------|
 | GET    | /api/productos        | Obtener todos los productos     |
 | GET    | /api/productos/:id    | Obtener un producto por ID      |
-| POST   | /api/productos        | Crear un nuevo producto         |
+| POST   | /api/productos/create | Crear un nuevo producto         |
 | PUT    | /api/productos/:id    | Actualizar producto por ID      |
 | DELETE | /api/productos/:id    | Eliminar producto por ID        |
-| POST   | /api/auth/register    | Registrar nuevo usuario         |
 | POST   | /api/auth/login       | Autenticación de usuario        |
 
 ---
@@ -62,14 +61,9 @@ El sistema también valida productos duplicados por nombre y protege accesos med
 Configurar un archivo `.env` con los siguientes valores:
 
 ```env
+JWT_SECRET...
+MOCK_USER_PASSWORD...
 PORT=3000
-JWT_SECRET=tu_clave_secreta
-FIREBASE_PROJECT_ID=...
-FIREBASE_API_KEY=...
-FIREBASE_AUTH_DOMAIN=...
-FIREBASE_STORAGE_BUCKET=...
-FIREBASE_MESSAGING_SENDER_ID=...
-FIREBASE_APP_ID=...
 
 ---
 
