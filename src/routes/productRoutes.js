@@ -1,18 +1,21 @@
-const express = require('express');
+import express from 'express';
+import {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct
+} from '../controllers/productController.js';
+import auth from '../middleware/auth.js';
+
 const router = express.Router();
-const productController = require('../controllers/productController');
-const auth = require('../middleware/auth');
 
-//Rutas
-router.get('/', productController.getAllProducts); // Pública
+// Rutas
+router.get('/', getAllProducts); // Pública
+router.get('/:id', getProductById); // Pública
+router.post('/create', auth, createProduct); // Protegida
+router.put('/:id', auth, updateProduct); // Protegida
+router.delete('/:id', auth, deleteProduct); // Protegida
 
-router.get('/:id', productController.getProductById); //Pública
+export default router;
 
-router.post('/create', auth, productController.createProduct); // Protegida
-
-router.put('/:id', auth, productController.updateProduct); // Protegida
-
-router.delete('/:id',auth, productController.deleteProduct); // Protegida
-
-
-module.exports = router;

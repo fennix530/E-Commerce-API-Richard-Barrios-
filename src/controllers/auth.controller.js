@@ -1,13 +1,16 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+import dotenv from 'dotenv';
+dotenv.config();
+
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const userMock = {
   id: 1,
   username: 'prueba',
-  password: bcrypt.hashSync(process.env.MOCK_USER_PASSWORD, 10),
+  password: bcrypt.hashSync(process.env.MOCK_USER_PASSWORD || '123456', 10),
 };
 
-exports.loginUser = (req, res) => {
+export const loginUser = (req, res) => {
   const { username, password } = req.body;
 
   if (username !== userMock.username) {
@@ -19,7 +22,9 @@ exports.loginUser = (req, res) => {
     return res.status(400).json({ message: 'Contraseña incorrecta' });
   }
 
-  const token = jwt.sign({ id: userMock.id }, process.env.JWT_SECRET, { expiresIn: '4h' });
+  const token = jwt.sign({ id: userMock.id }, process.env.JWT_SECRET, {
+    expiresIn: '4h'
+  });
 
   res.json({ token });
 };

@@ -1,26 +1,16 @@
-const firestoreService = require('../services/firestoreService');
-const Producto = require('../models/product');
+import * as firestoreService from '../services/firestoreService.js';
+import Producto from '../models/product.js';
 
-// Obtener todos los productos con filtros y paginación
-exports.getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res) => {
   try {
     const { page = 1, limit = 10, categoria, precioMin, precioMax } = req.query;
     let products = await firestoreService.getProducts();
 
-    if (categoria) {
-      products = products.filter(p => p.categoria === categoria);
-    }
-    if (precioMin) {
-      products = products.filter(p => p.precio >= parseFloat(precioMin));
-    }
-    if (precioMax) {
-      products = products.filter(p => p.precio <= parseFloat(precioMax));
-    }
+    if (categoria) products = products.filter(p => p.categoria === categoria);
+    if (precioMin) products = products.filter(p => p.precio >= parseFloat(precioMin));
+    if (precioMax) products = products.filter(p => p.precio <= parseFloat(precioMax));
 
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const paginados = products.slice(startIndex, endIndex);
-
+    const paginados = products.slice((page - 1) * limit, page * limit);
     res.status(200).json(paginados);
   } catch (error) {
     console.error('Error al obtener productos:', error);
@@ -28,14 +18,10 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
-// Obtener un producto por ID
-exports.getProductById = async (req, res) => {
+export const getProductById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const producto = await firestoreService.getProductById(id);
-    if (!producto) {
-      return res.status(404).json({ error: 'Producto no encontrado' });
-    }
+    const producto = await firestoreService.getProductById(req.params.id);
+    if (!producto) return res.status(404).json({ error: 'Producto no encontrado' });
     res.status(200).json(producto);
   } catch (error) {
     console.error('Error al obtener producto por ID:', error);
@@ -43,10 +29,15 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-// Crear un producto
-exports.createProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
   try {
-    const producto = new Producto(req.body);
+    const productoConValores = {
+      nombre: req.body.nombre || 'Producto sin nombre',
+      categoria: req.body.categoria || 'Sin especificar',
+      precio: req.body.precio ?? 0
+    };
+
+    const producto = new Producto(productoConValores);
     const creado = await firestoreService.createProduct(producto.toJSON());
     res.status(201).json(creado);
   } catch (error) {
@@ -55,17 +46,12 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-// Actualizar un producto
-exports.updateProduct = async (req, res) => {
+export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const productoExistente = await firestoreService.getProductById(id);
+    if (!productoExistente) return res.status(404).json({ error: 'Producto no encontrado' });
 
-    if (!productoExistente) {
-      return res.status(404).json({ error: 'Producto no encontrado' });
-    }
-
-    // Normalización si se incluye el nombre
     const nombreNormalizado = req.body.nombre
       ? req.body.nombre.trim().toLowerCase()
       : productoExistente.nombre.trim().toLowerCase();
@@ -85,11 +71,9 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
-// Eliminar un producto por ID
-exports.deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-    await firestoreService.deleteProduct(id);
+    await firestoreService.deleteProduct(req.params.id);
     res.status(200).json({ mensaje: 'Producto eliminado correctamente' });
   } catch (error) {
     console.error('Error al eliminar producto:', error);

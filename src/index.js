@@ -1,10 +1,11 @@
-const express = require('express');
-const app = express();
-const cors = require('cors');
-require('dotenv').config();
-const authRoutes = require('./routes/auth.routes');
-const productRoutes = require('./routes/productRoutes');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import authRoutes from './routes/auth.routes.js';
+import productRoutes from './routes/productRoutes.js';
 
+dotenv.config();
+const app = express();
 
 // Middleware para recibir JSON
 app.use(express.json());
