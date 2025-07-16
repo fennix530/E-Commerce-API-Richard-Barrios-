@@ -1,6 +1,7 @@
 import db from '../config/firebase.js';
 const collection = db.collection('productos');
 
+// Obtener todos los productos
 export const getProducts = async () => {
   const snapshot = await collection.get();
   return snapshot.docs.map(doc => {
@@ -10,6 +11,7 @@ export const getProducts = async () => {
   });
 };
 
+// Obtener producto por ID
 export const getProductById = async (id) => {
   const doc = await collection.doc(id).get();
   if (!doc.exists) return null;
@@ -18,16 +20,23 @@ export const getProductById = async (id) => {
   return { id: doc.id, ...data };
 };
 
+// Buscar producto por nombre normalizado (validación de duplicado)
+export const getByNombreNormalizado = async (nombreNormalizado) => {
+  if (typeof nombreNormalizado !== 'string') {
+    throw new Error('Por favor ingresá un nombre válido para el producto.');
+  }
+  return await collection.where('nombreNormalizado', '==', nombreNormalizado).get();
+};
+
+// Crear producto con validación
 export const createProduct = async (producto) => {
   if (!producto.nombre || typeof producto.precio === 'undefined') {
     throw new Error('Faltan campos obligatorios');
   }
 
   const nombreNormalizado = producto.nombre.trim().toLowerCase();
-  const existentes = await collection
-    .where('nombreNormalizado', '==', nombreNormalizado)
-    .get();
 
+  const existentes = await getByNombreNormalizado(nombreNormalizado);
   if (!existentes.empty) {
     throw new Error(`Ya existe un producto con el nombre "${producto.nombre}".`);
   }
@@ -46,14 +55,25 @@ export const createProduct = async (producto) => {
   return { id: nuevo.id, ...data };
 };
 
+// Actualizar producto con protección contra duplicado
 export const updateProduct = async (id, datosActualizados) => {
   const doc = await collection.doc(id).get();
-  const original = doc.exists ? doc.data() : {};
+  if (!doc.exists) throw new Error('Producto no encontrado');
+
+  const original = doc.data();
   delete original.updatedAt;
 
-  const nombreNormalizado = datosActualizados.nombre
-    ? datosActualizados.nombre.trim().toLowerCase()
-    : original.nombre?.trim().toLowerCase() || '';
+  let nombreNormalizado = original.nombre.trim().toLowerCase();
+
+  if (datosActualizados.nombre && datosActualizados.nombre.trim().toLowerCase() !== nombreNormalizado) {
+    nombreNormalizado = datosActualizados.nombre.trim().toLowerCase();
+
+    const duplicados = await getByNombreNormalizado(nombreNormalizado);
+    const yaExiste = duplicados.docs.some(d => d.id !== id);
+    if (yaExiste) {
+      throw new Error(`Ya existe un producto con el nombre "${datosActualizados.nombre}".`);
+    }
+  }
 
   const datosFinales = {
     ...original,
@@ -70,6 +90,7 @@ export const updateProduct = async (id, datosActualizados) => {
   return { id: actualizado.id, ...data };
 };
 
+// Eliminar producto
 export const deleteProduct = async (id) => {
   await collection.doc(id).delete();
   return { mensaje: 'Producto eliminado correctamente' };

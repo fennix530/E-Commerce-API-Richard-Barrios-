@@ -1,6 +1,7 @@
 import * as firestoreService from '../services/firestoreService.js';
 import Producto from '../models/product.js';
 
+// Obtiene todos los productos con filtros y paginación
 export const getAllProducts = async (req, res) => {
   try {
     const { page = 1, limit = 10, categoria, precioMin, precioMax } = req.query;
@@ -18,6 +19,7 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
+// Obtiene un producto por ID
 export const getProductById = async (req, res) => {
   try {
     const producto = await firestoreService.getProductById(req.params.id);
@@ -29,15 +31,24 @@ export const getProductById = async (req, res) => {
   }
 };
 
+// Crea un producto
 export const createProduct = async (req, res) => {
   try {
-    const productoConValores = {
-      nombre: req.body.nombre || 'Producto sin nombre',
-      categoria: req.body.categoria || 'Sin especificar',
-      precio: req.body.precio ?? 0
-    };
+    // Validación previa del campo "nombre"
+    if (!req.body.nombre || typeof req.body.nombre !== 'string') {
+      return res.status(400).json({ error: 'El nombre del producto es obligatorio y debe ser texto' });
+    }
 
-    const producto = new Producto(productoConValores);
+    // Instancia del producto con validaciones internas
+    const producto = new Producto(req.body);
+
+    // Validación de nombre duplicado
+    const existentes = await firestoreService.getByNombreNormalizado(producto.nombreNormalizado);
+    if (!existentes.empty) {
+      return res.status(400).json({ error: `Ya existe un producto con el nombre "${producto.nombre}".` });
+    }
+
+    // Guardado en Firestore
     const creado = await firestoreService.createProduct(producto.toJSON());
     res.status(201).json(creado);
   } catch (error) {
@@ -46,15 +57,28 @@ export const createProduct = async (req, res) => {
   }
 };
 
+// Actualiza un producto
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const productoExistente = await firestoreService.getProductById(id);
-    if (!productoExistente) return res.status(404).json({ error: 'Producto no encontrado' });
+    if (!productoExistente) {
+      return res.status(404).json({ error: 'Producto no encontrado' });
+    }
 
-    const nombreNormalizado = req.body.nombre
-      ? req.body.nombre.trim().toLowerCase()
-      : productoExistente.nombre.trim().toLowerCase();
+    let nombreNormalizado = productoExistente.nombre.trim().toLowerCase();
+
+    // Validar si el nombre fue modificado
+    if (req.body.nombre && req.body.nombre.trim().toLowerCase() !== nombreNormalizado) {
+      nombreNormalizado = req.body.nombre.trim().toLowerCase();
+
+      const duplicados = await firestoreService.getByNombreNormalizado(nombreNormalizado);
+      const yaExiste = duplicados.docs.some(d => d.id !== id);
+
+      if (yaExiste) {
+        return res.status(400).json({ error: `Ya existe un producto con el nombre "${req.body.nombre}".` });
+      }
+    }
 
     const productoActualizado = {
       ...productoExistente,
@@ -71,6 +95,7 @@ export const updateProduct = async (req, res) => {
   }
 };
 
+// Elimina un producto
 export const deleteProduct = async (req, res) => {
   try {
     await firestoreService.deleteProduct(req.params.id);

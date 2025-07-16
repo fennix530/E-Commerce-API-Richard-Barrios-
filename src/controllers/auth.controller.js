@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 const userMock = {
   id: 1,
   username: 'prueba',
-  password: bcrypt.hashSync(process.env.MOCK_USER_PASSWORD || '123456', 10),
+  password: bcrypt.hashSync(process.env.MOCK_USER_PASSWORD, 10),
 };
 
 export const loginUser = (req, res) => {
