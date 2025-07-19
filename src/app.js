@@ -8,11 +8,15 @@ import productRoutes from './routes/productRoutes.js';
 dotenv.config();
 const app = express();
 
+app.get('/', (req, res) => {
+  res.send('🔥 Backend Express vivo desde Vercel');
+});
+
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/auth', authRoutes);
-app.use('/api/productos', productRoutes);
+app.use('/auth', authRoutes);
+app.use('/productos', productRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
