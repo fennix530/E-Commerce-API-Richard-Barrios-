@@ -7,7 +7,7 @@ const authMiddleware = (req, res, next) => {
     : bearerToken;
 
   if (!token) {
-    console.warn('🔒 Token no proporcionado en la solicitud');
+    console.warn('Token no proporcionado en la solicitud');
     return res.status(401).json({ message: 'Acceso denegado. No se proporcionó token.' });
   }
 
@@ -16,7 +16,7 @@ const authMiddleware = (req, res, next) => {
     req.user = verified;
     next();
   } catch (err) {
-    console.error('🛑 Error al verificar token:', err.message);
+    console.error('Error al verificar token:', err.message);
     res.status(400).json({ message: 'Token inválido o expirado.' });
   }
 };
