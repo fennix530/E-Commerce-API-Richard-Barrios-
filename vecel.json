@@ -1,7 +1,8 @@
 {
   "functions": {
     "api/index.js": {
-      "runtime": "@vercel/node"
+      "runtime": "nodejs18.x",
+      "maxDuration": 300
     }
   },
   "routes": [
