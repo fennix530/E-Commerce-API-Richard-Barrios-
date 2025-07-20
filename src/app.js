@@ -27,4 +27,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 
+app.get('/ping', (req, res) => {
+  res.send('Pong ✅');
+});
+
 export default app;
