@@ -3,21 +3,18 @@ import admin from 'firebase-admin';
 let credentialObject;
 
 if (process.env.NODE_ENV !== 'production') {
-  // En desarrollo, usá firebase.json
+  // En desarrollo, usá el archivo firebase.json
   const serviceAccount = await import('./firebase.json', {
     assert: { type: 'json' },
   });
   credentialObject = serviceAccount.default;
 } else {
-  // En producción (Vercel), usá variables de entorno
+  // En producción (Vercel), usá variables de entorno sin transformar la clave
   credentialObject = {
     type: process.env.TYPE,
     project_id: process.env.PROJECT_ID,
     private_key_id: process.env.PRIVATE_KEY_ID,
-    private_key: (process.env.PRIVATE_KEY || '')
-      .replace(/\\n/g, '\n')
-      .replace(/\r/g, '')
-      .trim(),
+    private_key: process.env.PRIVATE_KEY, // SIN .replace() NI .trim()
     client_email: process.env.CLIENT_EMAIL,
     client_id: process.env.CLIENT_ID,
     auth_uri: process.env.AUTH_URI,
@@ -28,11 +25,13 @@ if (process.env.NODE_ENV !== 'production') {
   };
 }
 
+// Inicialización segura
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(credentialObject),
   });
 }
 
+// Exportá Firestore como db
 const db = admin.firestore();
 export default db;
