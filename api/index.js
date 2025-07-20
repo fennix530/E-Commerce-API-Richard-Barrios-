@@ -3,4 +3,4 @@ import app from '../src/app.js';
 
 console.log('Handler ejecutado');
 
-export const handler = serverless(app);
+export default serverless(app);
