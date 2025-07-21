@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/index.js": {
+    "index.js": {
       "runtime": "nodejs18.x",
       "maxDuration": 300
     }
@@ -8,7 +8,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/index.js"
+      "dest": "./index.js"
     }
   ]
 }
