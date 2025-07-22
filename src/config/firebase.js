@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
   });
   credentialObject = serviceAccount.default;
 } else {
+  console.log('🔐 private_key:', process.env.PRIVATE_KEY);
   credentialObject = {
     type: process.env.TYPE,
     project_id: process.env.PROJECT_ID,
