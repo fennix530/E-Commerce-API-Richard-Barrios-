@@ -9,8 +9,8 @@ if (process.env.NODE_ENV !== 'production') {
   credentialObject = serviceAccount.default;
 } else {
   const key = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n');
-  console.log(" Saltos de línea reales en la clave:", (key.match(/\n/g) || []).length);
-  
+  console.log("🔐 Saltos de línea reales:", (key.match(/\n/g) || []).length);
+
   credentialObject = {
     type: process.env.TYPE,
     project_id: process.env.PROJECT_ID,
@@ -24,13 +24,13 @@ if (process.env.NODE_ENV !== 'production') {
     client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
     universe_domain: process.env.UNIVERSE_DOMAIN,
   };
-  console.log("✅ Firebase inicializado");
 }
 
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(credentialObject),
   });
+  console.log("✅ Firebase inicializado");
 }
 
 const db = admin.firestore();
