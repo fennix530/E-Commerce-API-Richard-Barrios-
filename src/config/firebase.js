@@ -8,13 +8,14 @@ if (process.env.NODE_ENV !== 'production') {
   });
   credentialObject = serviceAccount.default;
 } else {
-  console.log('🔐 private_key:', process.env.PRIVATE_KEY);
+  const key = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n');
+  console.log(" Saltos de línea reales en la clave:", (key.match(/\n/g) || []).length);
+  
   credentialObject = {
     type: process.env.TYPE,
     project_id: process.env.PROJECT_ID,
     private_key_id: process.env.PRIVATE_KEY_ID,
-    const key = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n');
-console.log("🔐 Saltos de línea reales en la clave:", (key.match(/\n/g) || []).length);
+    private_key: key,
     client_email: process.env.CLIENT_EMAIL,
     client_id: process.env.CLIENT_ID,
     auth_uri: process.env.AUTH_URI,
