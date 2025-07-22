@@ -21,6 +21,10 @@ app.get('/ping', (req, res) => {
   res.send('Ping');
 });
 
+app.get('/vercel-test', (req, res) => {
+  res.send(' Vercel + Firebase funcionando');
+});
+
 app.use('/auth', authRoutes);
 
 // Manejo de ruta no encontrada
