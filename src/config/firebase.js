@@ -13,7 +13,8 @@ if (process.env.NODE_ENV !== 'production') {
     type: process.env.TYPE,
     project_id: process.env.PROJECT_ID,
     private_key_id: process.env.PRIVATE_KEY_ID,
-    private_key: (process.env.PRIVATE_KEY || '').replace(/\\n/g, '\n').trim(),
+    const key = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n');
+console.log("🔐 Saltos de línea reales en la clave:", (key.match(/\n/g) || []).length);
     client_email: process.env.CLIENT_EMAIL,
     client_id: process.env.CLIENT_ID,
     auth_uri: process.env.AUTH_URI,
