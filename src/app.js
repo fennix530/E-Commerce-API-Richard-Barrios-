@@ -1,4 +1,4 @@
-// …otros imports
+import express from 'express';
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/auth.routes.js';
 import db from './config/firebase.js';
