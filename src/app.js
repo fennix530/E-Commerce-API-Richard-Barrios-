@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/ping', (req, res) => {
-  res.send('Pong ✅');
+  res.send('Ping');
 });
 
 app.use('/auth', authRoutes);
