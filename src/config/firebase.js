@@ -24,6 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
     client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
     universe_domain: process.env.UNIVERSE_DOMAIN,
   };
+  console.log("✅ Firebase inicializado");
 }
 
 if (!admin.apps.length) {
