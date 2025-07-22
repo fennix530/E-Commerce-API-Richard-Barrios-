@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-
+import productRoutes from './routes/productroutes.js';
 import authRoutes from './routes/auth.routes.js';
 
 dotenv.config();
@@ -10,6 +10,8 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+app.use('/productos', productRoutes);
 
 app.get('/', (req, res) => {
   res.send('🔥 Backend Express desde Vercel');
