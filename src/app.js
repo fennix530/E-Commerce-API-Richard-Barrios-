@@ -21,12 +21,6 @@ app.get('/', (req, res) => {
   res.send('API de Ecommerce funcionando correctamente');
 });
 
-// Ruta de verificación opcional
-app.get('/vercel-test', (req, res) => {
-  console.log('vercel-test invocada');
-  res.send('Vercel + Firebase funcionando');
-});
-
 // Ruta no encontrada
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
