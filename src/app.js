@@ -16,6 +16,11 @@ app.use(cors());
 app.use('/productos', productRoutes);
 app.use('/auth', authRoutes);
 
+// Ruta raíz (respuesta rápida para verificar backend)
+app.get('/', (req, res) => {
+  res.send('API de Ecommerce funcionando correctamente');
+});
+
 // Ruta de verificación opcional
 app.get('/vercel-test', (req, res) => {
   console.log('vercel-test invocada');
