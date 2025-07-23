@@ -10,16 +10,18 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Rutas
+// Ruta de test
 router.get('/test', (req, res) => {
-  res.send('🧪 Ruta de test sin Firestore funcionando');
+  res.send('Ruta de test sin Firestore funcionando');
 });
-/*
-router.get('/', getAllProducts); // Pública
-router.get('/:id', getProductById); // Pública
-router.post('/create', auth, createProduct); // Protegida
-router.put('/:id', auth, updateProduct); // Protegida
-router.delete('/:id', auth, deleteProduct); // Protegida
-*/
-export default router;
 
+// Rutas públicas
+router.get('/', getAllProducts);         // Obtener todos los productos
+router.get('/:id', getProductById);      // Obtener producto por ID
+
+// Rutas protegidas
+router.post('/create', auth, createProduct);     // Crear producto
+router.put('/:id', auth, updateProduct);         // Actualizar producto
+router.delete('/:id', auth, deleteProduct);      // Eliminar producto
+
+export default router;
