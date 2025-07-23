@@ -2,7 +2,9 @@ import db from '../config/firebase.js';
 
 // Obtener todos los productos (limitado a 10 para evitar timeout)
 export const getProducts = async () => {
+  console.log('🔍 Iniciando consulta de productos');
   const snapshot = await db.collection('productos').limit(10).get();
+  console.log(`📦 Firestore respondió con ${snapshot.size} documentos`);
   return snapshot.docs.map(doc => {
     const data = doc.data();
     delete data.nombreNormalizado;
@@ -10,7 +12,6 @@ export const getProducts = async () => {
   });
 };
 
-// Obtener producto por ID
 export const getProductById = async (id) => {
   const doc = await db.collection('productos').doc(id).get();
   if (!doc.exists) return null;
@@ -19,7 +20,6 @@ export const getProductById = async (id) => {
   return { id: doc.id, ...data };
 };
 
-// Buscar producto por nombre normalizado (validación de duplicado)
 export const getByNombreNormalizado = async (nombreNormalizado) => {
   if (typeof nombreNormalizado !== 'string') {
     throw new Error('Por favor ingresá un nombre válido para el producto.');
@@ -30,7 +30,6 @@ export const getByNombreNormalizado = async (nombreNormalizado) => {
     .get();
 };
 
-// Crear producto con validación
 export const createProduct = async (producto) => {
   if (!producto.nombre || typeof producto.precio === 'undefined') {
     throw new Error('Faltan campos obligatorios');
@@ -56,7 +55,6 @@ export const createProduct = async (producto) => {
   return { id: nuevo.id, ...data };
 };
 
-// Actualizar producto con protección contra duplicado
 export const updateProduct = async (id, datosActualizados) => {
   const doc = await db.collection('productos').doc(id).get();
   if (!doc.exists) throw new Error('Producto no encontrado');
@@ -94,7 +92,6 @@ export const updateProduct = async (id, datosActualizados) => {
   return { id: actualizado.id, ...data };
 };
 
-// Eliminar producto
 export const deleteProduct = async (id) => {
   await db.collection('productos').doc(id).delete();
   return { mensaje: 'Producto eliminado correctamente' };
