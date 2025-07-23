@@ -1,9 +1,8 @@
 import db from '../config/firebase.js';
-const collection = db.collection('productos');
 
 // Obtener todos los productos
 export const getProducts = async () => {
-  const snapshot = await collection.get();
+  const snapshot = await db.collection('productos').get();
   return snapshot.docs.map(doc => {
     const data = doc.data();
     delete data.nombreNormalizado;
@@ -13,7 +12,7 @@ export const getProducts = async () => {
 
 // Obtener producto por ID
 export const getProductById = async (id) => {
-  const doc = await collection.doc(id).get();
+  const doc = await db.collection('productos').doc(id).get();
   if (!doc.exists) return null;
   const data = doc.data();
   delete data.nombreNormalizado;
@@ -25,7 +24,9 @@ export const getByNombreNormalizado = async (nombreNormalizado) => {
   if (typeof nombreNormalizado !== 'string') {
     throw new Error('Por favor ingresá un nombre válido para el producto.');
   }
-  return await collection.where('nombreNormalizado', '==', nombreNormalizado).get();
+  return await db.collection('productos')
+    .where('nombreNormalizado', '==', nombreNormalizado)
+    .get();
 };
 
 // Crear producto con validación
@@ -48,7 +49,7 @@ export const createProduct = async (producto) => {
     updatedAt: new Date().toISOString()
   };
 
-  const docRef = await collection.add(productoConExtra);
+  const docRef = await db.collection('productos').add(productoConExtra);
   const nuevo = await docRef.get();
   const data = nuevo.data();
   delete data.nombreNormalizado;
@@ -57,7 +58,7 @@ export const createProduct = async (producto) => {
 
 // Actualizar producto con protección contra duplicado
 export const updateProduct = async (id, datosActualizados) => {
-  const doc = await collection.doc(id).get();
+  const doc = await db.collection('productos').doc(id).get();
   if (!doc.exists) throw new Error('Producto no encontrado');
 
   const original = doc.data();
@@ -65,7 +66,10 @@ export const updateProduct = async (id, datosActualizados) => {
 
   let nombreNormalizado = original.nombre.trim().toLowerCase();
 
-  if (datosActualizados.nombre && datosActualizados.nombre.trim().toLowerCase() !== nombreNormalizado) {
+  if (
+    datosActualizados.nombre &&
+    datosActualizados.nombre.trim().toLowerCase() !== nombreNormalizado
+  ) {
     nombreNormalizado = datosActualizados.nombre.trim().toLowerCase();
 
     const duplicados = await getByNombreNormalizado(nombreNormalizado);
@@ -83,8 +87,8 @@ export const updateProduct = async (id, datosActualizados) => {
     updatedAt: new Date().toISOString()
   };
 
-  await collection.doc(id).set(datosFinales, { merge: true });
-  const actualizado = await collection.doc(id).get();
+  await db.collection('productos').doc(id).set(datosFinales, { merge: true });
+  const actualizado = await db.collection('productos').doc(id).get();
   const data = actualizado.data();
   delete data.nombreNormalizado;
   return { id: actualizado.id, ...data };
@@ -92,6 +96,6 @@ export const updateProduct = async (id, datosActualizados) => {
 
 // Eliminar producto
 export const deleteProduct = async (id) => {
-  await collection.doc(id).delete();
+  await db.collection('productos').doc(id).delete();
   return { mensaje: 'Producto eliminado correctamente' };
 };
