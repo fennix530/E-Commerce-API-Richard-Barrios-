@@ -13,7 +13,7 @@ Este proyecto es una API RESTful para la gestión de productos en una tienda onl
 - Paginación y filtrado por categoría y precio
 - Prevención de productos duplicados por nombre
 - Autenticación con JSON Web Tokens (JWT)
-- Estructura modular por controlador, modelo, ruta y servicio
+- Estructura modular por controlador, modelo, ruta
 
 ---
 
