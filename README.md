@@ -47,7 +47,56 @@ Este proyecto es una API RESTful para la gestión de productos en una tienda onl
 | DELETE | /api/productos/:id    | Eliminar producto por ID        |
 | POST   | /api/auth/login       | Autenticación de usuario        |
 
+
+## Endpoint de GET
+
+```http
+
+#### ▸ Listar todos los productos
+GET http://localhost:3000/productos
+
+▸ Paginación
+GET http://localhost:3000/productos?page=1&limit=10
+
+▸ Filtrar por categoría
+GET http://localhost:3000/productos?categoria=ropa
+
+▸ Filtrar por precio mínimo
+GET http://localhost:3000/productos?precioMin=2000
+
+▸ Filtrar por precio máximo
+GET http://localhost:3000/productos?precioMax=80000
+
+▸ Filtros combinados + paginación
+GET http://localhost:3000/productos?categoria=ropa&precioMin=30000&precioMax=80000&page=2&limit=5
+
+▸ Obtener producto por ID
+GET http://localhost:3000/productos/:id
+
+Ejemplo:
+GET http://localhost:3000/productos/EnvyIix05HSJ3kEcbp40
+
 ---
+
+Endpoint POST /productos
+
+▸ Crear producto nuevo
+POST http://localhost:3000/productos/create
+
+
+Endpoint PUT /productos/:id
+
+▸ Actualizar producto existente
+PUT http://localhost:3000/productos/:id
+
+
+Endpoint DELETE /productos/:id
+
+▸ Eliminar producto por ID
+DELETE http://localhost:3000/productos/:id
+
+---
+
 
 ## 🔐 Seguridad
 
