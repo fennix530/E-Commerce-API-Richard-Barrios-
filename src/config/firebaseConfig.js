@@ -3,14 +3,10 @@ import admin from 'firebase-admin';
 let credentialObject;
 
 if (process.env.NODE_ENV !== 'production') {
-  const serviceAccount = await import('./firebase.json', {
-    assert: { type: 'json' },
-  });
+  const serviceAccount = await import('./firebase.json', { assert: { type: 'json' } });
   credentialObject = serviceAccount.default;
 } else {
   const key = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n');
-  console.log("Saltos de línea reales:", (key.match(/\n/g) || []).length);
-
   credentialObject = {
     type: process.env.TYPE,
     project_id: process.env.PROJECT_ID,
@@ -30,8 +26,7 @@ if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(credentialObject),
   });
-  console.log("Firebase inicializado");
+  console.log('Firebase inicializado');
 }
 
-const db = admin.firestore();
-export default db;
+export const db = admin.firestore();

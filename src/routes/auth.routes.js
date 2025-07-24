@@ -6,8 +6,4 @@ const router = express.Router();
 
 router.post('/login', loginUser);
 
-router.get('/test', (req, res) => {
-  res.send('auth.routes.js cargado correctamente');
-});
-
 export default router;

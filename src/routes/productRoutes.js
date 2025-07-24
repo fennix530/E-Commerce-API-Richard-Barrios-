@@ -10,11 +10,6 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Ruta de test
-router.get('/test', (req, res) => {
-  res.send('Ruta de test sin Firestore funcionando');
-});
-
 // Rutas públicas
 router.get('/', getAllProducts);         // Obtener todos los productos
 router.get('/:id', getProductById);      // Obtener producto por ID

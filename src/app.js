@@ -16,7 +16,7 @@ app.use(cors());
 app.use('/productos', productRoutes);
 app.use('/auth', authRoutes);
 
-// Ruta raíz (respuesta rápida para verificar backend)
+// Ruta raíz Vercel
 app.get('/', (req, res) => {
   res.send('API de Ecommerce funcionando correctamente');
 });

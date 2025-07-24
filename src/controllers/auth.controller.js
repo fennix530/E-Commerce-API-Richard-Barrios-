@@ -10,6 +10,7 @@ const userMock = {
   password: bcrypt.hashSync(process.env.MOCK_USER_PASSWORD, 10),
 };
 
+//Login user
 export const loginUser = (req, res) => {
   const { username, password } = req.body;
 
