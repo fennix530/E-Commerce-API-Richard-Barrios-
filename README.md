@@ -11,7 +11,6 @@ Este proyecto es una API RESTful para la gestión de productos en una tienda onl
 - CRUD completo de productos
 - Validación de datos con modelo personalizado
 - Paginación y filtrado por categoría y precio
-- Timestamps automáticos (`createdAt`, `updatedAt`)
 - Prevención de productos duplicados por nombre
 - Autenticación con JSON Web Tokens (JWT)
 - Estructura modular por controlador, modelo, ruta y servicio
