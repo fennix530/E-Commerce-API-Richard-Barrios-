@@ -27,24 +27,24 @@ Este proyecto es una API RESTful para la gestión de productos en una tienda onl
     ├── middleware/ 
     ├── models/   
     ├── public/  
-    ├── routes/ 
-    ├── services/    
-    └── index.js
-├── .env 
+    ├── routes/    
+    └── app.js
+├── index.js
+├── vercel.json
 └── README.
 ´´´<pre>
 ---
 
 ## Endpoints principales
 
-| Método | Ruta                  | Descripción                     |
-|--------|-----------------------|---------------------------------|
-| GET    | /api/productos        | Obtener todos los productos     |
-| GET    | /api/productos/:id    | Obtener un producto por ID      |
-| POST   | /api/productos/create | Crear un nuevo producto         |
-| PUT    | /api/productos/:id    | Actualizar producto por ID      |
-| DELETE | /api/productos/:id    | Eliminar producto por ID        |
-| POST   | /api/auth/login       | Autenticación de usuario        |
+| Método | Ruta              | Descripción                     |
+|--------|-------------------|---------------------------------|
+| GET    | /productos        | Obtener todos los productos     |
+| GET    | /productos/:id    | Obtener un producto por ID      |
+| POST   | /productos/create | Crear un nuevo producto         |
+| PUT    | /productos/:id    | Actualizar producto por ID      |
+| DELETE | /productos/:id    | Eliminar producto por ID        |
+| POST   | /auth/login       | Autenticación de usuario        |
 
 
 ## Endpoint de GET
